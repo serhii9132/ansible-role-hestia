@@ -1,0 +1,44 @@
+---
+- name: Upgrade OS
+  ansible.builtin.apt:
+    upgrade: true
+    update_cache: true
+
+- name: Download installation script
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/hestiacp/hestiacp/release/install/{{ hestia_install_script }}
+    dest: /root/{{ hestia_install_script }}
+    mode: "644"
+
+- name: Run installation
+  ansible.builtin.command:
+    cmd: >
+      bash /root/{{ hestia_install_script }}
+      --interactive no
+      --port {{ hestia_port }}
+      --username {{ hestia_username }}
+      --sieve yes
+      --hostname {{ hestia_hostname }}
+      --email {{ hestia_admin_mail }}
+      --password {{ hestia_admin_password }}
+      --multiphp '{{ hestia_php_list_versions | join(",") }}'
+      --force
+  args:
+    creates: /usr/local/hestia
+  notify: Reboot server
+
+- name: Set custom NS for the default package
+  ansible.builtin.lineinfile:
+    path: /usr/local/hestia/data/packages/default.pkg
+    regexp: '^NS='
+    line: "NS='{{ hesia_nameserver_1 }},{{ hesia_nameserver_2 }}'"
+
+- name: Update NS for sysadmin user
+  ansible.builtin.command:
+    cmd: /usr/local/hestia/bin/v-change-user-ns {{ hestia_username }} {{ hesia_nameserver_1 }} {{ hesia_nameserver_2 }}
+  changed_when: true
+
+- name: Create DNS Zone for domain
+  ansible.builtin.command:
+    cmd: /usr/local/hestia/bin/v-add-dns-domain {{ hestia_username }} {{ hestia_hostname }} {{ ansible_default_ipv4.address }}
+  changed_when: true
