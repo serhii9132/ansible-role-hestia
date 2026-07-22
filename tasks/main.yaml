@@ -15,14 +15,30 @@
     cmd: >
       bash /root/{{ hestia_install_script }}
       --interactive no
-      --port {{ hestia_port }}
-      --username {{ hestia_username }}
-      --sieve yes
+      --force
+      --port {{ hestia_install_opt.port }}
       --hostname {{ hestia_hostname }}
+      --username {{ hestia_username }}
       --email {{ hestia_admin_mail }}
       --password {{ hestia_admin_password }}
-      --multiphp '{{ hestia_php_list_versions | join(",") }}'
-      --force
+      --apache {{ hestia_install_opt.apache }}
+      --phpfpm {{ hestia_install_opt.phpfpm }}
+      --multiphp '{{ hestia_install_opt.multiphp | join(",") }}'
+      --vsftpd {{ hestia_install_opt.vsftpd }}
+      --proftpd {{ hestia_install_opt.proftpd }}
+      --named {{ hestia_install_opt.named }}
+      --mysql {{ hestia_install_opt.mysql }}
+      --mysql8 {{ hestia_install_opt.mysql8 }}
+      --postgresql {{ hestia_install_opt.postgresql }}
+      --exim {{ hestia_install_opt.exim }}
+      --dovecot {{ hestia_install_opt.dovecot }}
+      --sieve {{ hestia_install_opt.sieve }}
+      --clamav {{ hestia_install_opt.clamav }}
+      --spamassassin {{ hestia_install_opt.spamassassin }}
+      --iptables {{ hestia_install_opt.iptables }}
+      --fail2ban {{ hestia_install_opt.fail2ban }}
+      --quota {{ hestia_install_opt.quota }}
+      --api {{ hestia_install_opt.api }}
   args:
     creates: /usr/local/hestia
   notify: Reboot server
@@ -31,11 +47,11 @@
   ansible.builtin.lineinfile:
     path: /usr/local/hestia/data/packages/default.pkg
     regexp: '^NS='
-    line: "NS='{{ hesia_nameserver_1 }},{{ hesia_nameserver_2 }}'"
+    line: "NS='{{ hestia_nameserver_1 }},{{ hestia_nameserver_2 }}'"
 
 - name: Update NS for sysadmin user
   ansible.builtin.command:
-    cmd: /usr/local/hestia/bin/v-change-user-ns {{ hestia_username }} {{ hesia_nameserver_1 }} {{ hesia_nameserver_2 }}
+    cmd: /usr/local/hestia/bin/v-change-user-ns {{ hestia_username }} {{ hestia_nameserver_1 }} {{ hestia_nameserver_2 }}
   changed_when: true
 
 - name: Create DNS Zone for domain

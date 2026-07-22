@@ -18,7 +18,7 @@ This role requires Ansible 2.19 or higher
 Role Variables
 --------------
 
-The role variables and their descriptions can be found [here](https://github.com/serhii9132/ansible-role-hestia/blob/main/defaults/main.yml).
+The role variables and their descriptions can be found [here](https://github.com/serhii9132/ansible-role-hestia/blob/main/defaults/main.yaml).
 
 Dependencies
 ------------
