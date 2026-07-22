@@ -1,7 +1,7 @@
-# Administrator email for HestiaCP (used for system notifications, sysadmin account, and Let's Encrypt)
+# Administrator email for HestiaCP (used for system notifications, sysadmin account, and Let"s Encrypt)
 hestia_admin_mail: "admin@example.com"
 
-# Password for the default 'sysadmin' account in the HestiaCP web interface
+# Password for the default "sysadmin" account in the HestiaCP web interface
 hestia_admin_password: "Password123"
 
 # Fully Qualified Domain Name (FQDN) for the server and control panel access
@@ -13,16 +13,24 @@ hestia_nameserver_1: "ns1.{{ hestia_hostname }}"
 # Secondary custom nameserver (NS2) for the default DNS zone
 hestia_nameserver_2: "ns2.{{ hestia_hostname }}"
 
-# List of PHP versions to install (will be parsed as a comma-separated string via --multiphp flag)
-hestia_php_list_versions:
-  - "5.6"
-  - "7.0"
-  - "7.1"
-  - "7.2"
-  - "7.3"
-  - "7.4"
-  - "8.0"
-  - "8.1"
-  - "8.2"
-  - "8.3"
-  - "8.4"
+# Install flags for hestia install script. supported values yes/no
+hestia_install_opt:
+  port: "28083"
+  apache: "yes"
+  phpfpm: "yes"
+  multiphp: ["5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1", "8.2", "8.3", "8.4"]
+  vsftpd: "yes"
+  proftpd: "no"
+  named: "yes"
+  mysql: "yes"
+  mysql8: "no"
+  postgresql: "no"
+  exim: "yes"
+  dovecot: "yes"
+  sieve: "yes"
+  clamav: "yes"
+  spamassassin: "yes"
+  iptables: "yes"
+  fail2ban: "yes"
+  quota: "no"
+  api: "yes"
