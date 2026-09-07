@@ -41,6 +41,8 @@
       --api {{ hestia_install_opt.api }}
   args:
     creates: /usr/local/hestia
+  async: 3600
+  poll: 20
   notify: Reboot server
 
 - name: Set custom NS for the default package
