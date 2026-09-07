@@ -3,6 +3,8 @@
   ansible.builtin.apt:
     upgrade: true
     update_cache: true
+  async: 1800
+  poll: 20
 
 - name: Download installation script
   ansible.builtin.get_url:
